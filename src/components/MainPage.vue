@@ -1,29 +1,39 @@
 <template>
   <div class="main-div">
-    <el-tabs class="tab" v-model="activeName" @tab-click="handleClick">
-      <el-tab-pane name="play_list">
-        <span class="tab-handler" slot="label">播放列表</span>
-        播放列表
-      </el-tab-pane>
-      <el-tab-pane name="select_music">
-        <span class="tab-handler" slot="label">&#12288;曲库&#12288;</span>
-        选择音乐
-      </el-tab-pane>
-    </el-tabs>
+    <Tabs class="tab" value="play_list" @on-click="handleClick">
+      <tab-pane :label="label1" name="play_list">标签一的内容</tab-pane>
+      <tab-pane :label="label2" name="select_music">标签二的内容</tab-pane>
+    </Tabs>
   </div>
 </template>
 
 <script>
+  import Tabs from 'iview/src/components/tabs/tabs';
+  import TabPane from 'iview/src/components/tabs/pane';
+
   export default {
     name: 'MainPage',
+    components: { Tabs, TabPane },
     data() {
       return {
         activeName: 'play_list',
+        label1: h => h('span', {
+          style: {
+            fontWeight: 'bold',
+            fontSize: '1rem',
+          },
+        }, '播放列表'),
+        label2: h => h('span', {
+          style: {
+            fontWeight: 'bold',
+            fontSize: '1rem',
+          },
+        }, '　曲库　'),
       };
     },
     methods: {
-      handleClick(tab, event) { // eslint-disable-line
-        console.log(tab.name);
+      handleClick(name) {
+        console.log(name);
       },
     },
   };
@@ -40,10 +50,5 @@
 
   .tab {
     padding: 1vh;
-  }
-
-  .tab-handler {
-    font-weight: bold;
-    font-size: 1rem;
   }
 </style>
