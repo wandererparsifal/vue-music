@@ -1,7 +1,13 @@
 <template>
-  <div class="hello">
-    <h1>{{ msg }}</h1>
-    <h2>Essential Links</h2>
+  <div class="main-div">
+    <el-tabs class="tab" v-model="activeName" @tab-click="handleClick">
+      <el-tab-pane label="播放列表" name="play_list">
+        播放列表
+      </el-tab-pane>
+      <el-tab-pane label="选择音乐" name="select_music">
+        选择音乐
+      </el-tab-pane>
+    </el-tabs>
   </div>
 </template>
 
@@ -10,29 +16,25 @@
     name: 'MainPage',
     data() {
       return {
-        msg: 'Welcome to Your Vue.js App',
+        activeName: 'play_list',
       };
+    },
+    methods: {
+      handleClick(tab, event) { // eslint-disable-line
+        console.log(tab.name, tab.label);
+      },
     },
   };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-  h1, h2 {
-    font-weight: normal;
+<style>
+  .main-div {
+    width: 100vw;
+    height: 100vh;
   }
 
-  ul {
-    list-style-type: none;
-    padding: 0;
-  }
-
-  li {
-    display: inline-block;
-    margin: 0 10px;
-  }
-
-  a {
-    color: #42b983;
+  .tab {
+    padding: 1vh;
   }
 </style>
