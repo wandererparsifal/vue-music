@@ -11,6 +11,10 @@
 </script>
 
 <style>
+  html {
+    font-size: calc(100vw / 100);
+  }
+
   body {
     margin: 0;
   }
