@@ -7,7 +7,7 @@ import Table from 'iview/src/components/table/table';
 import Collapse from 'iview/src/components/collapse/collapse';
 import Panel from 'iview/src/components/collapse/panel';
 import Button from 'iview/src/components/button/button';
-import 'iview/dist/styles/iview.css';
+import './theme/index.less';
 import App from './App';
 import router from './router';
 
