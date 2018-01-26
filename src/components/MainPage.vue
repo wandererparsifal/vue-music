@@ -1,19 +1,20 @@
 <template>
   <div class="main-div">
-    <Tabs class="tab" value="play_list" @on-click="handleClick">
-      <tab-pane :label="label1" name="play_list">标签一的内容</tab-pane>
-      <tab-pane :label="label2" name="select_music">标签二的内容</tab-pane>
-    </Tabs>
+    <i-tabs class="tab" value="play_list" @on-click="handleClick">
+      <i-tab-pane :label="label1" name="play_list">
+        <playlist/>
+      </i-tab-pane>
+      <i-tab-pane :label="label2" name="select_music">标签二的内容</i-tab-pane>
+    </i-tabs>
   </div>
 </template>
 
 <script>
-  import Tabs from 'iview/src/components/tabs/tabs';
-  import TabPane from 'iview/src/components/tabs/pane';
+  import Playlist from './Playlist';
 
   export default {
     name: 'MainPage',
-    components: { Tabs, TabPane },
+    components: { Playlist },
     data() {
       return {
         activeName: 'play_list',
