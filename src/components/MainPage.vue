@@ -52,6 +52,7 @@
   }
 
   .tab {
-    padding: 1vh;
+    width: 98vw;
+    margin-left: 1vw;
   }
 </style>
