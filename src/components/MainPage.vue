@@ -5,7 +5,7 @@
         <playlist/>
       </i-tab-pane>
       <i-tab-pane :label="label2" name="select_music">
-        标签二的内容
+        <select-music/>
       </i-tab-pane>
     </i-tabs>
   </div>
@@ -13,10 +13,11 @@
 
 <script>
   import Playlist from './Playlist';
+  import SelectMusic from './SelectMusic';
 
   export default {
     name: 'MainPage',
-    components: { Playlist },
+    components: { Playlist, SelectMusic },
     data() {
       return {
         activeName: 'play_list',
