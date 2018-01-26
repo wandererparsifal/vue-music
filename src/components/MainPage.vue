@@ -4,7 +4,9 @@
       <i-tab-pane :label="label1" name="play_list">
         <playlist/>
       </i-tab-pane>
-      <i-tab-pane :label="label2" name="select_music">标签二的内容</i-tab-pane>
+      <i-tab-pane :label="label2" name="select_music">
+        标签二的内容
+      </i-tab-pane>
     </i-tabs>
   </div>
 </template>
