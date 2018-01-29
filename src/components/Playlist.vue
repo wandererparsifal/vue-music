@@ -1,5 +1,5 @@
 <template>
-  <i-table class="table" :height="height" highlight-row="true" stripe :columns="columns1" :data="data1"/>
+  <i-table class="table" :height="height" :highlight-row="true" stripe :columns="columns1" :data="data1"/>
 </template>
 
 <script>
@@ -28,6 +28,25 @@
             title: 'Date',
             key: 'date',
             align: 'center',
+          },
+          {
+            title: ' ',
+            key: 'xxx',
+            align: 'center',
+            render: (h, params) => { // eslint-disable-line
+              return h('div', [
+                h('Icon', {
+                  props: {
+                    type: 'shuffle',
+                  },
+                  nativeOn: { // Icon 需要用 nativeOn，button 用 on
+                    click: () => {
+                      console.log('click Icon');
+                    },
+                  },
+                }, 'View'),
+              ]);
+            },
           },
         ],
         data1: [],
