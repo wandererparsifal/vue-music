@@ -1,9 +1,8 @@
 <template>
-  <i-table class="table" :height="height" stripe :columns="columns1" :data="data1"/>
+  <i-table class="table" :height="height" highlight-row="true" stripe :columns="columns1" :data="data1"/>
 </template>
 
 <script>
-
   export default {
     name: 'Playlist',
     data() {
@@ -53,6 +52,6 @@
 
 <style>
   .table {
-    opacity: 0.8;
+    opacity: 1;
   }
 </style>
