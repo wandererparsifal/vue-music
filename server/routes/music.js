@@ -1,41 +1,36 @@
 const express = require('express');
+const fs = require('fs');
+const path = require('path');
 
 const router = express.Router();
 
-/* GET home page. */
+const PATH = '/home/yangming/音乐';
+
 router.get('/', (req, res, next) => { // eslint-disable-line
   const array = [];
-  array.push({
-    name: '1',
-    dirName: 'Blackmore\'s Night - Under A Violet Moon',
-    files: [],
-    index: 0,
+  fs.readdir(PATH, (err, files) => {
+    const length = files.length;
+    let count = 0; // todo 循环异步解决方案
+    files.forEach((fileName) => {
+      const p = path.join(PATH, fileName);
+      fs.stat(p, (err, stats) => {
+        if (err) throw err;
+        if (stats.isDirectory()) {
+          array.push({
+            name: (array.length + 1).toString(),
+            dirName: p,
+            files: [],
+            index: array.length,
+          });
+        }
+        count += 1;
+        if (count === length) {
+          console.log('array', array);
+          res.json(array);
+        }
+      });
+    });
   });
-  array.push({
-    name: '2',
-    dirName: 'Gary Stadler - Fairy Heart Magic',
-    files: [],
-    index: 1,
-  });
-  array.push({
-    name: '3',
-    dirName: 'Rule of Rose Songs from the Original Soundtrack',
-    files: [],
-    index: 2,
-  });
-  array.push({
-    name: '4',
-    dirName: '原声大碟.-.[暗黑破坏神2.-.DiabloII].专辑.(mp3)',
-    files: [],
-    index: 3,
-  });
-  array.push({
-    name: '5',
-    dirName: '原声大碟.-.[潘神的迷宫.-.Pan\'\\\'\'s.Labyrinth].专辑.(mp3)',
-    files: [],
-    index: 4,
-  });
-  res.json(array);
 });
 
 module.exports = router;
