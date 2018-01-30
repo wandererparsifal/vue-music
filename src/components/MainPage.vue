@@ -1,6 +1,6 @@
 <template>
   <div class="main-div">
-    <i-tabs class="tab" value="play_list" @on-click="handleClick">
+    <i-tabs class="tab" :animated="false" value="play_list" @on-click="handleClick">
       <i-tab-pane :label="label1" name="play_list">
         <playlist/>
       </i-tab-pane>

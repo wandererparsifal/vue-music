@@ -1,5 +1,5 @@
 <template>
-  <i-collapse v-model="activeName" @on-change="changed">
+  <i-collapse class="collapse" v-model="activeName" @on-change="changed">
     <i-panel :name="item.name" v-for="item in items" :key="item.index">
       {{item.dirName}}
       <p slot="content">
@@ -44,5 +44,8 @@
 </script>
 
 <style>
-
+  .collapse {
+    overflow-y: auto;
+    max-height: 90vh;
+  }
 </style>
