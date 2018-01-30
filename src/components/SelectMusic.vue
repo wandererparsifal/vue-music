@@ -3,7 +3,7 @@
     <i-panel :name="item.name" v-for="item in items" :key="item.index">
       {{item.dirName}}
       <p slot="content">
-        <i-table class="table" stripe :columns="columns" :data="item.data"/>
+        <i-table class="table" stripe :columns="columns" :data="item.data" @on-row-click="rowClicked"/>
       </p>
     </i-panel>
   </i-collapse>
@@ -11,6 +11,7 @@
 
 <script>
   import axios from 'axios';
+  import EventBus from '../eventBus';
 
   export default {
     name: 'select-music',
@@ -65,6 +66,9 @@
     methods: {
       changed(names) {
         console.log(names);
+      },
+      rowClicked(data) {
+        EventBus.$emit('EVENT_MUSIC_ADDED', data);
       },
     },
   };

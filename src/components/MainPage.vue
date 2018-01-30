@@ -37,7 +37,7 @@
     },
     methods: {
       handleClick(name) {
-        console.log(name);
+        name.toString();
       },
     },
   };

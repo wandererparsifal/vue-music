@@ -3,6 +3,8 @@
 </template>
 
 <script>
+  import EventBus from '../eventBus';
+
   export default {
     name: 'Playlist',
     data() {
@@ -52,13 +54,9 @@
       window.addEventListener('resize', () => {
         this.height = document.documentElement.clientHeight * 0.87;
       });
-      for (let i = 0; i < 20; i += 1) {
-        this.data1.push({
-          title: '01 - Hace Mucho, Mucho Tiempo',
-          artist: 'Javier Navarrete',
-          album: '潘神的迷宫.-.Pan\'s.Labyrinth',
-        });
-      }
+      EventBus.$on('EVENT_MUSIC_ADDED', (data) => {
+        this.data1.push(data);
+      });
     },
   };
 </script>
