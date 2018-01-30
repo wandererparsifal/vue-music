@@ -7,6 +7,7 @@ const bodyParser = require('body-parser');
 const ejs = require('ejs');
 
 const index = require('./routes/index');
+const music = require('./routes/music');
 
 const app = express();
 
@@ -24,6 +25,7 @@ app.use(cookieParser());
 app.use(express.static(__dirname));
 
 app.use('/', index);
+app.use('/music', music);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {

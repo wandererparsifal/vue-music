@@ -12,6 +12,7 @@ const portfinder = require('portfinder')
 
 const HOST = process.env.HOST
 const PORT = process.env.PORT && Number(process.env.PORT)
+const routerMusic = require('../server/routes/music');
 
 const devWebpackConfig = merge(baseWebpackConfig, {
   module: {
@@ -42,7 +43,10 @@ const devWebpackConfig = merge(baseWebpackConfig, {
     quiet: true, // necessary for FriendlyErrorsPlugin
     watchOptions: {
       poll: config.dev.poll,
-    }
+    },
+    before(app) {
+      app.use('/music', routerMusic);
+    },
   },
   plugins: [
     new webpack.DefinePlugin({
