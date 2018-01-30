@@ -3,7 +3,7 @@
     <i-panel :name="item.name" v-for="item in items" :key="item.index">
       {{item.dirName}}
       <p slot="content">
-        {{item.files}}
+        <i-table class="table" stripe :columns="columns" :data="item.data"/>
       </p>
     </i-panel>
   </i-collapse>
@@ -18,6 +18,23 @@
       return {
         activeName: '0',
         items: [],
+        columns: [
+          {
+            title: 'Title',
+            key: 'title',
+            align: 'left',
+          },
+          {
+            title: 'Artist',
+            key: 'artist',
+            align: 'left',
+          },
+          {
+            title: 'Album',
+            key: 'album',
+            align: 'left',
+          },
+        ],
       };
     },
     created() {
@@ -25,6 +42,16 @@
         .then((response) => {
           const data = response.data;
           if (data instanceof Array) {
+            data.forEach((d) => {
+              d.data = [];
+              d.titles.forEach((t) => {
+                d.data.push({
+                  title: t,
+                  artist: 'artist',
+                  album: 'album',
+                });
+              });
+            });
             this.items = response.data;
             setTimeout(() => { // todo 必须延迟，否则无效 ?
               this.activeName = '1';

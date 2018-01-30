@@ -4,7 +4,7 @@ const path = require('path');
 
 const router = express.Router();
 
-const PATH = '/home/yangming/音乐';
+const PATH = '/home/yangming/temp/Music';
 
 router.get('/', (req, res, next) => { // eslint-disable-line
   const array = [];
@@ -19,14 +19,17 @@ router.get('/', (req, res, next) => { // eslint-disable-line
         if (stats.isDirectory()) {
           fs.readdir(musicDir, (err, musics) => {
             if (err) throw err;
+            const musicTitles = [];
             const musicPaths = [];
             musics.forEach((musicName) => {
+              musicTitles.push(path.basename(musicName, '.mp3'));
               musicPaths.push(path.join(musicDir, musicName));
             });
             array.push({
               name: (array.length + 1).toString(),
-              dirName: musicDir,
-              files: musicPaths,
+              titles: musicTitles,
+              dirName: fileName,
+              paths: musicPaths,
               index: array.length,
             });
             count += 1;
