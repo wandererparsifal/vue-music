@@ -9,24 +9,34 @@ const PATH = '/home/yangming/音乐';
 router.get('/', (req, res, next) => { // eslint-disable-line
   const array = [];
   fs.readdir(PATH, (err, files) => {
+    if (err) throw err;
     const length = files.length;
     let count = 0; // todo 循环异步解决方案
     files.forEach((fileName) => {
-      const p = path.join(PATH, fileName);
-      fs.stat(p, (err, stats) => {
+      const musicDir = path.join(PATH, fileName);
+      fs.stat(musicDir, (err, stats) => {
         if (err) throw err;
         if (stats.isDirectory()) {
-          array.push({
-            name: (array.length + 1).toString(),
-            dirName: p,
-            files: [],
-            index: array.length,
+          fs.readdir(musicDir, (err, musics) => {
+            if (err) throw err;
+            const musicPaths = [];
+            musics.forEach((musicName) => {
+              musicPaths.push(path.join(musicDir, musicName));
+            });
+            array.push({
+              name: (array.length + 1).toString(),
+              dirName: musicDir,
+              files: musicPaths,
+              index: array.length,
+            });
+            count += 1;
+            if (count === length) {
+              console.log('array', array);
+              res.json(array);
+            }
           });
-        }
-        count += 1;
-        if (count === length) {
-          console.log('array', array);
-          res.json(array);
+        } else {
+          count += 1;
         }
       });
     });
