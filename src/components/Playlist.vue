@@ -10,23 +10,18 @@
         height: 0,
         columns1: [
           {
-            title: 'Name',
-            key: 'name',
+            title: 'Title',
+            key: 'title',
+            align: 'left',
+          },
+          {
+            title: 'Artist',
+            key: 'artist',
             align: 'center',
           },
           {
-            title: 'Age',
-            key: 'age',
-            align: 'center',
-          },
-          {
-            title: 'Address',
-            key: 'address',
-            align: 'center',
-          },
-          {
-            title: 'Date',
-            key: 'date',
+            title: 'Album',
+            key: 'album',
             align: 'center',
           },
           {
@@ -57,12 +52,11 @@
       window.addEventListener('resize', () => {
         this.height = document.documentElement.clientHeight * 0.87;
       });
-      for (let i = 0; i < 50; i += 1) {
+      for (let i = 0; i < 20; i += 1) {
         this.data1.push({
-          name: 'Jon Snow',
-          age: 26,
-          address: 'Ottawa No. 2 Lake Park',
-          date: '2016-10-04',
+          title: '01 - Hace Mucho, Mucho Tiempo',
+          artist: 'Javier Navarrete',
+          album: '潘神的迷宫.-.Pan\'s.Labyrinth',
         });
       }
     },
