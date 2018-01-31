@@ -1,5 +1,5 @@
 <template>
-  <i-table class="table" :height="height" :highlight-row="true" stripe :columns="columns1" :data="data1"/>
+  <i-table class="table" :height="height" :highlight-row="true" stripe :columns="columns" :data="data"/>
 </template>
 
 <script>
@@ -10,7 +10,7 @@
     data() {
       return {
         height: 0,
-        columns1: [
+        columns: [
           {
             title: 'Title',
             key: 'title',
@@ -46,7 +46,8 @@
             },
           },
         ],
-        data1: [],
+        data: [],
+        musicIds: [],
       };
     },
     created() {
@@ -54,8 +55,11 @@
       window.addEventListener('resize', () => {
         this.height = document.documentElement.clientHeight * 0.87;
       });
-      EventBus.$on('EVENT_MUSIC_ADDED', (data) => {
-        this.data1.push(data);
+      EventBus.$on('EVENT_MUSIC_ADDED', (musicData) => {
+        if (!this.musicIds.includes(musicData.id)) {
+          this.musicIds.push(musicData.id);
+          this.data.push(musicData);
+        }
       });
     },
   };

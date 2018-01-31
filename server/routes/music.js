@@ -1,6 +1,7 @@
 const express = require('express');
 const fs = require('fs');
 const path = require('path');
+const uuidv4 = require('uuid/v4');
 
 const router = express.Router();
 
@@ -19,22 +20,25 @@ router.get('/', (req, res, next) => { // eslint-disable-line
         if (stats.isDirectory()) {
           fs.readdir(musicDir, (err, musics) => {
             if (err) throw err;
-            const musicTitles = [];
-            const musicPaths = [];
+            const musicList = [];
             musics.forEach((musicName) => {
-              musicTitles.push(path.basename(musicName, '.mp3'));
-              musicPaths.push(path.join(musicDir, musicName));
+              musicList.push({
+                title: path.basename(musicName, '.mp3'),
+                path: path.join(musicDir, musicName),
+                artist: 'artist',
+                album: 'album',
+                id: uuidv4(),
+              });
             });
             array.push({
               name: (array.length + 1).toString(),
-              titles: musicTitles,
               dirName: fileName,
-              paths: musicPaths,
+              list: musicList,
               index: array.length,
             });
             count += 1;
             if (count === length) {
-              console.log('array', array);
+              console.log('array', JSON.stringify(array));
               res.json(array);
             }
           });

@@ -1,9 +1,9 @@
 <template>
   <i-collapse class="collapse" v-model="activeName" @on-change="changed">
-    <i-panel :name="item.name" v-for="item in items" :key="item.index">
+    <i-panel :name="item.name" v-for="item in items" :key="item.id">
       {{item.dirName}}
       <p slot="content">
-        <i-table class="table" stripe :columns="columns" :data="item.data" @on-row-click="rowClicked"/>
+        <i-table class="table" stripe :columns="columns" :data="item.list" @on-row-click="rowClicked"/>
       </p>
     </i-panel>
   </i-collapse>
@@ -43,16 +43,6 @@
         .then((response) => {
           const data = response.data;
           if (data instanceof Array) {
-            data.forEach((d) => {
-              d.data = [];
-              d.titles.forEach((t) => {
-                d.data.push({
-                  title: t,
-                  artist: 'artist',
-                  album: 'album',
-                });
-              });
-            });
             this.items = response.data;
             setTimeout(() => { // todo 必须延迟，否则无效 ?
               this.activeName = '1';
@@ -67,8 +57,8 @@
       changed(names) {
         console.log(names);
       },
-      rowClicked(data) {
-        EventBus.$emit('EVENT_MUSIC_ADDED', data);
+      rowClicked(musicData) {
+        EventBus.$emit('EVENT_MUSIC_ADDED', musicData);
       },
     },
   };
