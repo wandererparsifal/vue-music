@@ -3,6 +3,7 @@
     <i-tabs class="tab" :animated="false" value="play_list" @on-click="handleClick">
       <i-tab-pane :label="label1" name="play_list">
         <playlist/>
+        <play-panel class="playpanel"/>
       </i-tab-pane>
       <i-tab-pane :label="label2" name="select_music">
         <select-music/>
@@ -14,10 +15,15 @@
 <script>
   import Playlist from './Playlist';
   import SelectMusic from './SelectMusic';
+  import PlayPanel from './PlayPanel';
 
   export default {
     name: 'MainPage',
-    components: { Playlist, SelectMusic },
+    components: {
+      PlayPanel,
+      Playlist,
+      SelectMusic,
+    },
     data() {
       return {
         activeName: 'play_list',
@@ -55,5 +61,9 @@
   .tab {
     width: 98vw;
     margin-left: 1vw;
+  }
+
+  .playpanel {
+    margin-top: 2vh;
   }
 </style>
