@@ -44,9 +44,9 @@
           const data = response.data;
           if (data instanceof Array) {
             this.items = response.data;
-            setTimeout(() => { // todo 必须延迟，否则无效 ?
+            this.$nextTick(() => {
               this.activeName = '1';
-            }, 0);
+            });
           }
         })
         .catch((response) => {
