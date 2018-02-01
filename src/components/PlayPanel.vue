@@ -33,7 +33,7 @@
     created() {
       EventBus.$on('EVENT_MUSIC_PLAY', (musicData) => {
         console.log('musicData', musicData);
-        this.audioPath = musicData.path;
+        this.audioPath = `music/path?path=${musicData.path}`;
       });
     },
   };
