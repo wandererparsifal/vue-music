@@ -1,5 +1,6 @@
 <template>
-  <i-table class="table" :height="height" :highlight-row="true" stripe :columns="columns" :data="data"/>
+  <i-table class="table" :height="height" :highlight-row="true" stripe :columns="columns" :data="data"
+           @on-row-click="rowClicked"/>
 </template>
 
 <script>
@@ -49,6 +50,11 @@
         data: [],
         musicIds: [],
       };
+    },
+    methods: {
+      rowClicked(musicData) {
+        EventBus.$emit('EVENT_MUSIC_PLAY', musicData);
+      },
     },
     created() {
       this.height = document.documentElement.clientHeight * 0.77;

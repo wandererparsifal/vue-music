@@ -5,7 +5,7 @@ const uuidv4 = require('uuid/v4');
 
 const router = express.Router();
 
-const PATH = '/home/yangming/temp/Music';
+const PATH = '/home/yangming/Develop/Projects/Web/vue-music/server/static/Music';
 
 router.get('/', (req, res, next) => { // eslint-disable-line
   const array = [];
@@ -24,7 +24,7 @@ router.get('/', (req, res, next) => { // eslint-disable-line
             musics.forEach((musicName) => {
               musicList.push({
                 title: path.basename(musicName, '.mp3'),
-                path: path.join(musicDir, musicName),
+                path: path.relative(__dirname, path.join(musicDir, musicName)),
                 artist: 'artist',
                 album: 'album',
                 id: uuidv4(),

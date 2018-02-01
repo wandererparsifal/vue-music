@@ -1,9 +1,11 @@
 <template>
   <div>
+    <audio :src="audioPath"
+           controls="controls"></audio>
     <div class="panel">
       <img class="blank" src="">
       <img class="prev" @click="onButtonClick('prev')" src="../assets/icon_prev.svg">
-      <img class="play" @click="onButtonClick('play')" src="../assets/icon_play.svg">
+      <img class="play" @click="onButtonClick('play')" src="../assets/icon_stop.svg">
       <img class="next" @click="onButtonClick('next')" src="../assets/icon_next.svg">
       <img class="mode" @click="onButtonClick('mode')" src="../assets/icon_shuffle.svg">
     </div>
@@ -14,12 +16,25 @@
 </template>
 
 <script>
+  import EventBus from '../eventBus';
+
   export default {
     name: 'PlayPanel',
+    data() {
+      return {
+        audioPath: '',
+      };
+    },
     methods: {
       onButtonClick(id) {
         console.log('clickButton', id);
       },
+    },
+    created() {
+      EventBus.$on('EVENT_MUSIC_PLAY', (musicData) => {
+        console.log('musicData', musicData);
+        this.audioPath = musicData.path;
+      });
     },
   };
 </script>
