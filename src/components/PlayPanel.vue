@@ -8,10 +8,10 @@
       <img class="next" @click="onButtonClick('next')" src="../assets/icon_next.svg">
       <img class="mode" @click="onButtonClick('mode')" src="../assets/icon_shuffle.svg">
       <img class="volume" @click="onButtonClick('volume')" :src="iconVolume">
-      <i-progress class="progress-volume" :percent="70" hide-info :stroke-width="6"></i-progress>
+      <input class="progress-volume" type="range" min="0" max="100" v-model="percentVolume"/>
     </div>
     <div class="panel">
-      <i-progress class="progress-music" :percent="25" hide-info></i-progress>
+      <i-progress class="progress-music" :percent="25" hide-info/>
     </div>
   </div>
 </template>
@@ -21,10 +21,12 @@
   import svgPause from '@/assets/icon_pause.svg';
   import svgPlay from '@/assets/icon_play.svg';
   import svgVolume from '@/assets/icon_volume.svg';
-  // import svgMute from '@/assets/icon_mute.svg';
+  import svgMute from '@/assets/icon_mute.svg';
   import EventBus from '../eventBus';
 
   let isPlaying = false;
+
+  let isMute = false;
 
   let audio = null;
 
@@ -35,6 +37,7 @@
         audioPath: '',
         iconPlay: svgStop,
         iconVolume: svgVolume,
+        percentVolume: 100,
       };
     },
     methods: {
@@ -46,7 +49,34 @@
           } else {
             audio.play();
           }
+        } else if (id === 'volume') {
+          if (isMute) {
+            this.percentVolume = 50;
+          } else {
+            this.percentVolume = 0;
+          }
         }
+      },
+      setVolume(volume) {
+        if (volume === 0) {
+          isMute = true;
+          this.iconVolume = svgMute;
+        } else {
+          if (isMute) { // eslint-disable-line
+            isMute = false;
+            this.iconVolume = svgVolume;
+          }
+        }
+      },
+    },
+    watch: {
+      percentVolume: {
+        deep: true,
+        handler(curVal, oldVal) { // eslint-disable-line
+          const volume = curVal / 100;
+          audio.volume = volume;
+          this.setVolume(volume);
+        },
       },
     },
     created() {
