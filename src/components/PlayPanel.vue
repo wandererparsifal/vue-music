@@ -14,10 +14,16 @@
                   :sliderStyle="{backgroundColor: '#483D8B'}"/>
     </div>
     <div class="panel-progress">
-      <vue-slider ref="slider" class="progress-music" v-model="currentTime" :tooltip="false" :speed="1" width="81vw"
+      <div class="text-current-time">
+        {{textCurrentTime}}
+      </div>
+      <vue-slider ref="slider" class="progress-music" v-model="currentTime" :tooltip="false" :speed="2" width="81vw"
                   :dot-size="16" :max="totalTime"
                   :bgStyle="{backgroundColor: '#fff'}" :processStyle="{backgroundColor: 'rgba(0, 127, 255, 0.7)'}"
                   :sliderStyle="{backgroundColor: '#483D8B'}"/>
+      <div class="text-total-time">
+        {{textTotalTime}}
+      </div>
     </div>
     <div class="panel-blank">
     </div>
@@ -52,6 +58,8 @@
         percentVolume: 100,
         currentTime: 0,
         totalTime: 0,
+        textCurrentTime: '00:00',
+        textTotalTime: '00:00',
       };
     },
     methods: {
@@ -83,11 +91,41 @@
         }
       },
       updateTime() {
-        console.log('currentTime', audio.currentTime);
-        const currentTime = parseInt(audio.currentTime, 10);
+        const currentTime = Math.round(audio.currentTime);
         if (currentTime <= this.totalTime) {
           this.currentTime = currentTime;
         }
+        this.textCurrentTime = this.formatTime(this.currentTime);
+      },
+      formatTime(value) {
+        let s = parseInt(value, 10);// 秒
+        let m = 0;// 分
+        let h = 0;// 小时
+        if (s > 60) {
+          m = parseInt(s / 60, 10);
+          s = parseInt(s % 60, 10);
+          if (m > 60) {
+            h = parseInt(m / 60, 10);
+            m = parseInt(m % 60, 10);
+          }
+        }
+        let result = '';
+        if (s > 10) {
+          result = parseInt(s, 10); // eslint-disable-line
+        } else {
+          result = '0' + parseInt(s, 10); // eslint-disable-line
+        }
+        if (m > 10) {
+          result = parseInt(m, 10) + ':' + result; // eslint-disable-line
+        } else {
+          result = '0' + parseInt(m, 10) + ':' + result; // eslint-disable-line
+        }
+        if (h > 10) {
+          result = parseInt(h, 10) + ':' + result; // eslint-disable-line
+        } else if (h > 0) {
+          result = '0' + parseInt(h, 10) + ':' + result; // eslint-disable-line
+        }
+        return result;
       },
     },
     watch: {
@@ -113,9 +151,8 @@
       console.log('this.$refs.audio', this.$refs.audio);
       audio = this.$refs.audio;
       audio.addEventListener('canplay', () => {
-        console.log('duration', audio.duration);
-        this.totalTime = parseInt(audio.duration, 10);
-        this.currentTime = this.totalTime;
+        this.totalTime = Math.round(audio.duration);
+        this.textTotalTime = this.formatTime(this.totalTime);
       });
       audio.addEventListener('playing', () => {
         console.log('playing');
@@ -131,6 +168,7 @@
       });
       audio.addEventListener('ended', () => {
         console.log('ended');
+        this.currentTime = this.totalTime;
       });
     },
   };
@@ -204,6 +242,20 @@
 
   .progress-music {
     margin-top: 1vh;
+    margin-left: 1vw;
+  }
+
+  .text-current-time {
+    color: #007FFF;
+    margin-top: 1.4vh;
+    font-size: 1rem;
     margin-left: -2vw;
+  }
+
+  .text-total-time {
+    color: #007FFF;
+    margin-top: 1.4vh;
+    font-size: 1rem;
+    margin-left: 1vw;
   }
 </style>
