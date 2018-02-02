@@ -14,8 +14,8 @@
                   :sliderStyle="{backgroundColor: '#483D8B'}"/>
     </div>
     <div class="panel-progress">
-      <vue-slider ref="slider" class="progress-music" v-model="percentMusic" :tooltip="false" width="81vw"
-                  :dot-size="16" :max="10000"
+      <vue-slider ref="slider" class="progress-music" v-model="percentMusic" :tooltip="false" :speed="1" width="81vw"
+                  :dot-size="16" :max="maxMusic"
                   :bgStyle="{backgroundColor: '#fff'}" :processStyle="{backgroundColor: 'rgba(0, 127, 255, 0.7)'}"
                   :sliderStyle="{backgroundColor: '#483D8B'}"/>
     </div>
@@ -39,6 +39,8 @@
 
   let audio = null;
 
+  let timerId = 0;
+
   export default {
     name: 'PlayPanel',
     components: { vueSlider },
@@ -48,7 +50,8 @@
         iconPlay: svgStop,
         iconVolume: svgVolume,
         percentVolume: 100,
-        percentMusic: 2500,
+        percentMusic: 0,
+        maxMusic: 0,
       };
     },
     methods: {
@@ -79,6 +82,13 @@
           }
         }
       },
+      updateTime() {
+        console.log('currentTime', audio.currentTime);
+        const currentTime = parseInt(audio.currentTime, 10);
+        if (currentTime <= this.maxMusic) {
+          this.percentMusic = currentTime;
+        }
+      },
     },
     watch: {
       percentVolume: {
@@ -102,15 +112,25 @@
     mounted() {
       console.log('this.$refs.audio', this.$refs.audio);
       audio = this.$refs.audio;
+      audio.addEventListener('canplay', () => {
+        console.log('duration', audio.duration);
+        this.maxMusic = parseInt(audio.duration, 10);
+        this.percentMusic = this.maxMusic;
+      });
       audio.addEventListener('playing', () => {
         console.log('playing');
         isPlaying = true;
         this.iconPlay = svgPause;
+        timerId = setInterval(this.updateTime, 1000);
       });
       audio.addEventListener('pause', () => {
         console.log('paused');
         isPlaying = false;
         this.iconPlay = svgPlay;
+        clearInterval(timerId);
+      });
+      audio.addEventListener('ended', () => {
+        console.log('ended');
       });
     },
   };
