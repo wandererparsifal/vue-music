@@ -14,8 +14,8 @@
                   :sliderStyle="{backgroundColor: '#483D8B'}"/>
     </div>
     <div class="panel-progress">
-      <vue-slider ref="slider" class="progress-music" v-model="percentMusic" :tooltip="false" :speed="1" width="81vw"
-                  :dot-size="16" :max="maxMusic"
+      <vue-slider ref="slider" class="progress-music" v-model="currentTime" :tooltip="false" :speed="1" width="81vw"
+                  :dot-size="16" :max="totalTime"
                   :bgStyle="{backgroundColor: '#fff'}" :processStyle="{backgroundColor: 'rgba(0, 127, 255, 0.7)'}"
                   :sliderStyle="{backgroundColor: '#483D8B'}"/>
     </div>
@@ -50,8 +50,8 @@
         iconPlay: svgStop,
         iconVolume: svgVolume,
         percentVolume: 100,
-        percentMusic: 0,
-        maxMusic: 0,
+        currentTime: 0,
+        totalTime: 0,
       };
     },
     methods: {
@@ -85,8 +85,8 @@
       updateTime() {
         console.log('currentTime', audio.currentTime);
         const currentTime = parseInt(audio.currentTime, 10);
-        if (currentTime <= this.maxMusic) {
-          this.percentMusic = currentTime;
+        if (currentTime <= this.totalTime) {
+          this.currentTime = currentTime;
         }
       },
     },
@@ -114,8 +114,8 @@
       audio = this.$refs.audio;
       audio.addEventListener('canplay', () => {
         console.log('duration', audio.duration);
-        this.maxMusic = parseInt(audio.duration, 10);
-        this.percentMusic = this.maxMusic;
+        this.totalTime = parseInt(audio.duration, 10);
+        this.currentTime = this.totalTime;
       });
       audio.addEventListener('playing', () => {
         console.log('playing');
