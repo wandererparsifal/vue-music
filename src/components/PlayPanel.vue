@@ -47,6 +47,37 @@
 
   let timerId = 0;
 
+  function formatTime(value) {
+    let s = parseInt(value, 10);// 秒
+    let m = 0;// 分
+    let h = 0;// 小时
+    if (s > 60) {
+      m = parseInt(s / 60, 10);
+      s = parseInt(s % 60, 10);
+      if (m > 60) {
+        h = parseInt(m / 60, 10);
+        m = parseInt(m % 60, 10);
+      }
+    }
+    let result = '';
+    if (s > 10) {
+      result = parseInt(s, 10); // eslint-disable-line
+    } else {
+      result = '0' + parseInt(s, 10); // eslint-disable-line
+    }
+    if (m > 10) {
+      result = parseInt(m, 10) + ':' + result; // eslint-disable-line
+    } else {
+      result = '0' + parseInt(m, 10) + ':' + result; // eslint-disable-line
+    }
+    if (h > 10) {
+      result = parseInt(h, 10) + ':' + result; // eslint-disable-line
+    } else if (h > 0) {
+      result = '0' + parseInt(h, 10) + ':' + result; // eslint-disable-line
+    }
+    return result;
+  }
+
   export default {
     name: 'PlayPanel',
     components: { vueSlider },
@@ -79,54 +110,6 @@
           }
         }
       },
-      setVolume(volume) {
-        if (volume === 0) {
-          isMute = true;
-          this.iconVolume = svgMute;
-        } else {
-          if (isMute) { // eslint-disable-line
-            isMute = false;
-            this.iconVolume = svgVolume;
-          }
-        }
-      },
-      updateTime() {
-        const currentTime = Math.round(audio.currentTime);
-        if (currentTime <= this.totalTime) {
-          this.currentTime = currentTime;
-        }
-        this.textCurrentTime = this.formatTime(this.currentTime);
-      },
-      formatTime(value) {
-        let s = parseInt(value, 10);// 秒
-        let m = 0;// 分
-        let h = 0;// 小时
-        if (s > 60) {
-          m = parseInt(s / 60, 10);
-          s = parseInt(s % 60, 10);
-          if (m > 60) {
-            h = parseInt(m / 60, 10);
-            m = parseInt(m % 60, 10);
-          }
-        }
-        let result = '';
-        if (s > 10) {
-          result = parseInt(s, 10); // eslint-disable-line
-        } else {
-          result = '0' + parseInt(s, 10); // eslint-disable-line
-        }
-        if (m > 10) {
-          result = parseInt(m, 10) + ':' + result; // eslint-disable-line
-        } else {
-          result = '0' + parseInt(m, 10) + ':' + result; // eslint-disable-line
-        }
-        if (h > 10) {
-          result = parseInt(h, 10) + ':' + result; // eslint-disable-line
-        } else if (h > 0) {
-          result = '0' + parseInt(h, 10) + ':' + result; // eslint-disable-line
-        }
-        return result;
-      },
     },
     watch: {
       percentVolume: {
@@ -134,7 +117,15 @@
         handler(curVal, oldVal) { // eslint-disable-line
           const volume = curVal / 100;
           audio.volume = volume;
-          this.setVolume(volume);
+          if (volume === 0) {
+            isMute = true;
+            this.iconVolume = svgMute;
+          } else {
+            if (isMute) { // eslint-disable-line
+              isMute = false;
+              this.iconVolume = svgVolume;
+            }
+          }
         },
       },
     },
@@ -152,13 +143,19 @@
       audio = this.$refs.audio;
       audio.addEventListener('canplay', () => {
         this.totalTime = Math.round(audio.duration);
-        this.textTotalTime = this.formatTime(this.totalTime);
+        this.textTotalTime = formatTime(this.totalTime);
       });
       audio.addEventListener('playing', () => {
         console.log('playing');
         isPlaying = true;
         this.iconPlay = svgPause;
-        timerId = setInterval(this.updateTime, 1000);
+        timerId = setInterval(() => {
+          const currentTime = Math.round(audio.currentTime);
+          if (currentTime <= this.totalTime) {
+            this.currentTime = currentTime;
+          }
+          this.textCurrentTime = formatTime(this.currentTime);
+        }, 1000);
       });
       audio.addEventListener('pause', () => {
         console.log('paused');
