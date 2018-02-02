@@ -57,9 +57,9 @@
       },
     },
     created() {
-      this.height = document.documentElement.clientHeight * 0.77;
+      this.height = document.documentElement.clientHeight * 0.79;
       window.addEventListener('resize', () => {
-        this.height = document.documentElement.clientHeight * 0.77;
+        this.height = document.documentElement.clientHeight * 0.79;
       });
       EventBus.$on('EVENT_MUSIC_ADDED', (musicData) => {
         if (!this.musicIds.includes(musicData.id)) {

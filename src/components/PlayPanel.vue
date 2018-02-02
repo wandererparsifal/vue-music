@@ -1,8 +1,8 @@
 <template>
   <div>
     <audio ref="audio" :src="audioPath"
-           controls="controls"></audio>
-    <div class="panel">
+           controls="controls" hidden></audio>
+    <div class="panel-controls">
       <img class="prev" @click="onButtonClick('prev')" src="../assets/icon_prev.svg">
       <img class="play" ref="play" @click="onButtonClick('play')" :src="iconPlay">
       <img class="next" @click="onButtonClick('next')" src="../assets/icon_next.svg">
@@ -10,8 +10,10 @@
       <img class="volume" @click="onButtonClick('volume')" :src="iconVolume">
       <input class="progress-volume" type="range" min="0" max="100" v-model="percentVolume"/>
     </div>
-    <div class="panel">
-      <i-progress class="progress-music" :percent="25" hide-info/>
+    <div class="panel-progress">
+      <input class="progress-music" type="range" min="0" max="100" v-model="percentMusic"/>
+    </div>
+    <div class="panel-blank">
     </div>
   </div>
 </template>
@@ -38,6 +40,7 @@
         iconPlay: svgStop,
         iconVolume: svgVolume,
         percentVolume: 100,
+        percentMusic: 25,
       };
     },
     methods: {
@@ -106,13 +109,29 @@
 </script>
 
 <style scoped>
-  .panel {
+  .panel-controls {
     width: 100vw;
     height: 2vw;
     background-color: rgba(255, 255, 255, 0.5);
     display: flex;
     align-items: center;
     clear: both;
+  }
+
+  .panel-progress {
+    width: 100vw;
+    height: 2vw;
+    background-color: rgba(255, 255, 255, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    clear: both;
+  }
+
+  .panel-blank {
+    width: 100vw;
+    height: 1vh;
+    background-color: rgba(255, 255, 255, 0.5);
   }
 
   .prev {
@@ -159,6 +178,6 @@
   .progress-music {
     margin-top: 1vh;
     margin-left: -2vw;
-    width: 92vw;
+    width: 81vw;
   }
 </style>
