@@ -8,10 +8,16 @@
       <img class="next" @click="onButtonClick('next')" src="../assets/icon_next.svg">
       <img class="mode" @click="onButtonClick('mode')" src="../assets/icon_shuffle.svg">
       <img class="volume" @click="onButtonClick('volume')" :src="iconVolume">
-      <input class="progress-volume" type="range" min="0" max="100" v-model="percentVolume"/>
+      <vue-slider ref="slider" class="progress-volume" v-model="percentVolume" :tooltip="false" width="8vw"
+                  :dot-size="12" :max="100"
+                  :bgStyle="{backgroundColor: '#fff'}" :processStyle="{backgroundColor: 'rgba(0, 127, 255, 0.7)'}"
+                  :sliderStyle="{backgroundColor: '#483D8B'}"/>
     </div>
     <div class="panel-progress">
-      <input class="progress-music" type="range" min="0" max="100" v-model="percentMusic"/>
+      <vue-slider ref="slider" class="progress-music" v-model="percentMusic" :tooltip="false" width="81vw"
+                  :dot-size="16" :max="10000"
+                  :bgStyle="{backgroundColor: '#fff'}" :processStyle="{backgroundColor: 'rgba(0, 127, 255, 0.7)'}"
+                  :sliderStyle="{backgroundColor: '#483D8B'}"/>
     </div>
     <div class="panel-blank">
     </div>
@@ -24,6 +30,7 @@
   import svgPlay from '@/assets/icon_play.svg';
   import svgVolume from '@/assets/icon_volume.svg';
   import svgMute from '@/assets/icon_mute.svg';
+  import vueSlider from 'vue-slider-component';
   import EventBus from '../eventBus';
 
   let isPlaying = false;
@@ -34,13 +41,14 @@
 
   export default {
     name: 'PlayPanel',
+    components: { vueSlider },
     data() {
       return {
         audioPath: '',
         iconPlay: svgStop,
         iconVolume: svgVolume,
         percentVolume: 100,
-        percentMusic: 25,
+        percentMusic: 2500,
       };
     },
     methods: {
@@ -172,12 +180,10 @@
   .progress-volume {
     margin-top: 2vh;
     margin-left: 0.5vw;
-    width: 8vw;
   }
 
   .progress-music {
     margin-top: 1vh;
     margin-left: -2vw;
-    width: 81vw;
   }
 </style>
