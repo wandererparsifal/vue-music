@@ -53,17 +53,17 @@
       }
     }
     let result = '';
-    if (s > 10) {
+    if (s >= 10) {
       result = parseInt(s, 10); // eslint-disable-line
     } else {
       result = '0' + parseInt(s, 10); // eslint-disable-line
     }
-    if (m > 10) {
+    if (m >= 10) {
       result = parseInt(m, 10) + ':' + result; // eslint-disable-line
     } else {
       result = '0' + parseInt(m, 10) + ':' + result; // eslint-disable-line
     }
-    if (h > 10) {
+    if (h >= 10) {
       result = parseInt(h, 10) + ':' + result; // eslint-disable-line
     } else if (h > 0) {
       result = '0' + parseInt(h, 10) + ':' + result; // eslint-disable-line
