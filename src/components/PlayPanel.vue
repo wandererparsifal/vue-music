@@ -8,19 +8,13 @@
       <img class="next" @click="onButtonClick('next')" src="../assets/icon_next.svg">
       <img class="mode" @click="onButtonClick('mode')" src="../assets/icon_shuffle.svg">
       <img class="volume" @click="onButtonClick('volume')" :src="iconVolume">
-      <vue-slider ref="slider" class="progress-volume" v-model="percentVolume" :tooltip="false" width="8vw"
-                  :dot-size="12" :max="100"
-                  :bgStyle="{backgroundColor: '#fff'}" :processStyle="{backgroundColor: 'rgba(0, 127, 255, 0.7)'}"
-                  :sliderStyle="{backgroundColor: '#483D8B'}"/>
+      <input type="range" class="progress-volume" v-model="percentVolume"/>
     </div>
     <div class="panel-progress">
       <div class="text-current-time">
         {{textCurrentTime}}
       </div>
-      <vue-slider ref="slider" class="progress-music" v-model="currentTime" :tooltip="false" :speed="2" width="81vw"
-                  :dot-size="16" :max="totalTime"
-                  :bgStyle="{backgroundColor: '#fff'}" :processStyle="{backgroundColor: 'rgba(0, 127, 255, 0.7)'}"
-                  :sliderStyle="{backgroundColor: '#483D8B'}"/>
+      <input type="range" class="progress-music" v-model="currentTime" :max="totalTime"/>
       <div class="text-total-time">
         {{textTotalTime}}
       </div>
@@ -36,7 +30,6 @@
   import svgPlay from '@/assets/icon_play.svg';
   import svgVolume from '@/assets/icon_volume.svg';
   import svgMute from '@/assets/icon_mute.svg';
-  import vueSlider from 'vue-slider-component';
   import EventBus from '../eventBus';
 
   let isPlaying = false;
@@ -80,7 +73,6 @@
 
   export default {
     name: 'PlayPanel',
-    components: { vueSlider },
     data() {
       return {
         audioPath: '',
@@ -240,6 +232,7 @@
   .progress-music {
     margin-top: 1vh;
     margin-left: 1vw;
+    width: 81vw;
   }
 
   .text-current-time {
