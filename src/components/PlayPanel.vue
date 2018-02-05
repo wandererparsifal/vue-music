@@ -6,7 +6,7 @@
       <img class="prev" @click="onButtonClick('prev', $event)" src="../assets/icon_prev.svg">
       <img class="play" @click="onButtonClick('play', $event)" :src="iconPlay">
       <img class="next" @click="onButtonClick('next', $event)" src="../assets/icon_next.svg">
-      <img class="mode" @click="onButtonClick('mode', $event)" src="../assets/icon_shuffle.svg">
+      <img class="mode" @click="onButtonClick('mode', $event)" src="../assets/icon_loop.svg">
       <img class="volume" @click="onButtonClick('volume', $event)" :src="iconVolume">
       <input type="range" class="progress-volume" v-model="percentVolume"/>
     </div>
@@ -43,7 +43,7 @@
 
   let timerId = 0;
 
-  let mode = 'SHUFFLE';
+  let mode = 'LOOP';
 
   let indexCurrent = 0;
 
@@ -190,19 +190,23 @@
             mode = 'SHUFFLE';
           }
         } else if (id === 'next') {
-          audio.fastSeek(0);
-          const musicData = getNext(mode);
-          this.audioPath = `music/path?path=${musicData.path}`;
-          this.$nextTick(() => {
-            audio.play();
-          });
+          if (playList.length !== 0) {
+            audio.fastSeek(0);
+            const musicData = getNext(mode);
+            this.audioPath = `music/path?path=${musicData.path}`;
+            this.$nextTick(() => {
+              audio.play();
+            });
+          }
         } else if (id === 'prev') {
-          audio.fastSeek(0);
-          const musicData = getPrev(mode);
-          this.audioPath = `music/path?path=${musicData.path}`;
-          this.$nextTick(() => {
-            audio.play();
-          });
+          if (playList.length !== 0) {
+            audio.fastSeek(0);
+            const musicData = getPrev(mode);
+            this.audioPath = `music/path?path=${musicData.path}`;
+            this.$nextTick(() => {
+              audio.play();
+            });
+          }
         }
       },
     },
