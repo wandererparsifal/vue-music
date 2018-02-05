@@ -43,6 +43,14 @@
 
   let timerId = 0;
 
+  let mode = null;
+
+  let indexCurrent = 0;
+
+  const musicIds = [];
+
+  const playList = [];
+
   function formatTime(value) {
     let s = parseInt(value, 10);// 秒
     let m = 0;// 分
@@ -72,6 +80,40 @@
       result = '0' + parseInt(h, 10) + ':' + result; // eslint-disable-line
     }
     return result;
+  }
+
+  function getNext(mode) {
+    if (mode === 'LOOP') {
+      indexCurrent += 1;
+      if (indexCurrent === playList.length) {
+        indexCurrent = 0;
+      }
+      EventBus.$emit('EVENT_HIGHLIGHT_ROW', indexCurrent);
+      return playList[indexCurrent];
+    } else if (mode === 'ONE') {
+      return playList[indexCurrent];
+    }
+    // else if (mode === 'SHUFFLE') {
+    //
+    // }
+    return null;
+  }
+
+  function getPrev(mode) {
+    if (mode === 'LOOP') {
+      indexCurrent -= 1;
+      if (indexCurrent === -1) {
+        indexCurrent = playList.length - 1;
+      }
+      EventBus.$emit('EVENT_HIGHLIGHT_ROW', indexCurrent);
+      return playList[indexCurrent];
+    } else if (mode === 'ONE') {
+      return playList[indexCurrent];
+    }
+    // else if (mode === 'SHUFFLE') {
+    //
+    // }
+    return null;
   }
 
   export default {
@@ -107,11 +149,28 @@
           const src = event.currentTarget.src;
           if (src === svgShuffle) {
             event.currentTarget.src = svgLoop;
+            mode = 'LOOP';
           } else if (src === svgLoop) {
             event.currentTarget.src = svgOne;
+            mode = 'ONE';
           } else if (src === svgOne) {
             event.currentTarget.src = svgShuffle;
+            mode = 'SHUFFLE';
           }
+        } else if (id === 'next') {
+          audio.fastSeek(0);
+          const musicData = getNext(mode);
+          this.audioPath = `music/path?path=${musicData.path}`;
+          this.$nextTick(() => {
+            audio.play();
+          });
+        } else if (id === 'prev') {
+          audio.fastSeek(0);
+          const musicData = getPrev(mode);
+          this.audioPath = `music/path?path=${musicData.path}`;
+          this.$nextTick(() => {
+            audio.play();
+          });
         }
       },
     },
@@ -134,12 +193,19 @@
       },
     },
     created() {
-      EventBus.$on('EVENT_MUSIC_PLAY', (musicData) => {
-        console.log('musicData', musicData);
+      EventBus.$on('EVENT_MUSIC_PLAY', (musicData, index) => {
+        console.log('musicData', musicData, index);
+        indexCurrent = index;
         this.audioPath = `music/path?path=${musicData.path}`;
         this.$nextTick(() => {
           audio.play();
         });
+      });
+      EventBus.$on('EVENT_MUSIC_ADDED', (musicData) => {
+        if (!musicIds.includes(musicData.id)) {
+          musicIds.push(musicData.id);
+          playList.push(musicData);
+        }
       });
     },
     mounted() {

@@ -1,10 +1,12 @@
 <template>
-  <i-table class="table" :height="height" :highlight-row="true" stripe :columns="columns" :data="data"
+  <i-table ref="refPlaylist" class="table" :height="height" :highlight-row="true" stripe :columns="columns" :data="data"
            @on-row-click="rowClicked"/>
 </template>
 
 <script>
   import EventBus from '../eventBus';
+
+  let tablePlaylist = null;
 
   export default {
     name: 'Playlist',
@@ -52,8 +54,8 @@
       };
     },
     methods: {
-      rowClicked(musicData) {
-        EventBus.$emit('EVENT_MUSIC_PLAY', musicData);
+      rowClicked(musicData, index) {
+        EventBus.$emit('EVENT_MUSIC_PLAY', musicData, index);
       },
     },
     created() {
@@ -67,6 +69,12 @@
           this.data.push(musicData);
         }
       });
+      EventBus.$on('EVENT_HIGHLIGHT_ROW', (index) => {
+        tablePlaylist.highlightCurrentRow(index);
+      });
+    },
+    mounted() {
+      tablePlaylist = this.$refs.refPlaylist;
     },
   };
 </script>
