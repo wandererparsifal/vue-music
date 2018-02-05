@@ -3,11 +3,11 @@
     <audio ref="audio" :src="audioPath"
            controls="controls" hidden></audio>
     <div class="panel-controls">
-      <img class="prev" @click="onButtonClick('prev')" src="../assets/icon_prev.svg">
-      <img class="play" ref="play" @click="onButtonClick('play')" :src="iconPlay">
-      <img class="next" @click="onButtonClick('next')" src="../assets/icon_next.svg">
-      <img class="mode" @click="onButtonClick('mode')" src="../assets/icon_shuffle.svg">
-      <img class="volume" @click="onButtonClick('volume')" :src="iconVolume">
+      <img class="prev" @click="onButtonClick('prev', $event)" src="../assets/icon_prev.svg">
+      <img class="play" @click="onButtonClick('play', $event)" :src="iconPlay">
+      <img class="next" @click="onButtonClick('next', $event)" src="../assets/icon_next.svg">
+      <img class="mode" @click="onButtonClick('mode', $event)" src="../assets/icon_shuffle.svg">
+      <img class="volume" @click="onButtonClick('volume', $event)" :src="iconVolume">
       <input type="range" class="progress-volume" v-model="percentVolume"/>
     </div>
     <div class="panel-progress">
@@ -30,6 +30,9 @@
   import svgPlay from '@/assets/icon_play.svg';
   import svgVolume from '@/assets/icon_volume.svg';
   import svgMute from '@/assets/icon_mute.svg';
+  import svgShuffle from '@/assets/icon_shuffle.svg';
+  import svgLoop from '@/assets/icon_loop.svg';
+  import svgOne from '@/assets/icon_one.svg';
   import EventBus from '../eventBus';
 
   let isPlaying = false;
@@ -86,7 +89,7 @@
       };
     },
     methods: {
-      onButtonClick(id) {
+      onButtonClick(id, event) {
         console.log('clickButton', id);
         if (id === 'play') {
           if (isPlaying) {
@@ -99,6 +102,15 @@
             this.percentVolume = 50;
           } else {
             this.percentVolume = 0;
+          }
+        } else if (id === 'mode') {
+          const src = event.currentTarget.src;
+          if (src === svgShuffle) {
+            event.currentTarget.src = svgLoop;
+          } else if (src === svgLoop) {
+            event.currentTarget.src = svgOne;
+          } else if (src === svgOne) {
+            event.currentTarget.src = svgShuffle;
           }
         }
       },
@@ -131,7 +143,6 @@
       });
     },
     mounted() {
-      console.log('this.$refs.audio', this.$refs.audio);
       audio = this.$refs.audio;
       audio.addEventListener('canplay', () => {
         this.totalTime = Math.round(audio.duration);
