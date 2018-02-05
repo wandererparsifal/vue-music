@@ -43,13 +43,15 @@
 
   let timerId = 0;
 
-  let mode = null;
+  let mode = 'SHUFFLE';
 
   let indexCurrent = 0;
 
   const musicIds = [];
 
   const playList = [];
+
+  let shuffleList = [];
 
   function formatTime(value) {
     let s = parseInt(value, 10);// 秒
@@ -92,10 +94,25 @@
       return playList[indexCurrent];
     } else if (mode === 'ONE') {
       return playList[indexCurrent];
+    } else if (mode === 'SHUFFLE') {
+      if (shuffleList.length === 0) {
+        shuffleList = shuffleList.concat(playList);
+      }
+      const randomIndex = parseInt(shuffleList.length * Math.random(), 10);
+      let item;
+      for (let i = 0; i < playList.length; i += 1) {
+        item = playList[i];
+        if (item.id === shuffleList[randomIndex].id) {
+          indexCurrent = i;
+          break;
+        }
+      }
+      shuffleList.splice(randomIndex, 1);
+      console.log('shuffleList.length', shuffleList.length);
+      console.log('indexCurrent', indexCurrent);
+      EventBus.$emit('EVENT_HIGHLIGHT_ROW', indexCurrent);
+      return playList[indexCurrent];
     }
-    // else if (mode === 'SHUFFLE') {
-    //
-    // }
     return null;
   }
 
@@ -109,10 +126,25 @@
       return playList[indexCurrent];
     } else if (mode === 'ONE') {
       return playList[indexCurrent];
+    } else if (mode === 'SHUFFLE') {
+      if (shuffleList.length === 0) {
+        shuffleList = shuffleList.concat(playList);
+      }
+      const randomIndex = parseInt(shuffleList.length * Math.random(), 10);
+      let item;
+      for (let i = 0; i < playList.length; i += 1) {
+        item = playList[i];
+        if (item.id === shuffleList[randomIndex].id) {
+          indexCurrent = i;
+          break;
+        }
+      }
+      shuffleList.splice(randomIndex, 1);
+      console.log('shuffleList.length', shuffleList.length);
+      console.log('indexCurrent', indexCurrent);
+      EventBus.$emit('EVENT_HIGHLIGHT_ROW', indexCurrent);
+      return playList[indexCurrent];
     }
-    // else if (mode === 'SHUFFLE') {
-    //
-    // }
     return null;
   }
 
