@@ -190,23 +190,29 @@
             mode = 'SHUFFLE';
           }
         } else if (id === 'next') {
-          if (playList.length !== 0) {
-            audio.fastSeek(0);
-            const musicData = getNext(mode);
-            this.audioPath = `music/path?path=${musicData.path}`;
-            this.$nextTick(() => {
-              audio.play();
-            });
-          }
+          this.playNext();
         } else if (id === 'prev') {
-          if (playList.length !== 0) {
-            audio.fastSeek(0);
-            const musicData = getPrev(mode);
-            this.audioPath = `music/path?path=${musicData.path}`;
-            this.$nextTick(() => {
-              audio.play();
-            });
-          }
+          this.playPrev();
+        }
+      },
+      playNext() {
+        if (playList.length !== 0) {
+          audio.fastSeek(0);
+          const musicData = getNext(mode);
+          this.audioPath = `music/path?path=${musicData.path}`;
+          this.$nextTick(() => {
+            audio.play();
+          });
+        }
+      },
+      playPrev() {
+        if (playList.length !== 0) {
+          audio.fastSeek(0);
+          const musicData = getPrev(mode);
+          this.audioPath = `music/path?path=${musicData.path}`;
+          this.$nextTick(() => {
+            audio.play();
+          });
         }
       },
     },
@@ -271,6 +277,7 @@
       audio.addEventListener('ended', () => {
         console.log('ended');
         this.currentTime = this.totalTime;
+        this.playNext();
       });
     },
   };
