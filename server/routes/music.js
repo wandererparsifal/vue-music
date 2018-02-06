@@ -2,6 +2,7 @@ const express = require('express');
 const fs = require('fs');
 const path = require('path');
 const uuidv4 = require('uuid/v4');
+const id3 = require('id3js');
 
 const router = express.Router();
 
@@ -42,48 +43,74 @@ function statAsync(path) {
   });
 }
 
+function id3Async(path) {
+  return new Promise((resolve, reject) => {
+    id3({ file: path, type: id3.OPEN_LOCAL }, (error, tags) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve(tags);
+      }
+    });
+  });
+}
+
+function getMusicDirectory(musicDirs, files) {
+  return Promise.all(files.map((file) => {
+    const musicDir = path.join(PATH, file);
+    return statAsync(musicDir)
+      .then((stat) => {
+        if (stat.isDirectory()) {
+          musicDirs.push(musicDir);
+        }
+      });
+  }));
+}
+
+function getMusicList(list, musicDirs) {
+  return Promise.all(musicDirs.map((musicDir) => { // eslint-disable-line
+    const musicList = [];
+    return readDirAsync(musicDir)
+      .then((musicArray) => {
+        console.log('musicArray', musicArray);
+        return Promise.all(musicArray.map((musicName) => { // eslint-disable-line
+          return id3Async(path.join(musicDir, musicName))
+            .then((tags) => {
+              musicList.push({
+                title: tags.title !== null ? tags.title : path.basename(musicName, '.mp3'), // todo Unicode 乱码
+                path: path.join(musicDir, musicName),
+                artist: tags.artist !== null ? tags.artist : '-',
+                album: tags.album !== null ? tags.album : '-',
+                id: uuidv4(),
+              });
+            });
+        }));
+      })
+      .then(() => {
+        list.push({
+          name: (list.length + 1).toString(),
+          dirName: path.basename(musicDir),
+          list: musicList,
+          index: list.length,
+        });
+      });
+  }));
+}
+
 router.get('/', (req, res, next) => { // eslint-disable-line
-  const array = [];
+  const list = [];
   const musicDirs = [];
   readDirAsync(PATH)
     .then((files) => { // eslint-disable-line
-      return Promise.all(files.map((file) => {
-        const musicDir = path.join(PATH, file);
-        return statAsync(musicDir)
-          .then((stat) => {
-            if (stat.isDirectory()) {
-              musicDirs.push(musicDir);
-            }
-          });
-      }));
+      return getMusicDirectory(musicDirs, files);
     })
     .then(() => {
       console.log('musicDirs', musicDirs);
-      return Promise.all(musicDirs.map((musicDir) => { // eslint-disable-line
-        return readDirAsync(musicDir)
-          .then((musicArray) => {
-            console.log('musicArray', musicArray);
-            const musicList = musicArray.map((musicName) => { // eslint-disable-line
-              return {
-                title: path.basename(musicName, '.mp3'),
-                path: path.join(musicDir, musicName),
-                artist: 'artist',
-                album: 'album',
-                id: uuidv4(),
-              };
-            });
-            array.push({
-              name: (array.length + 1).toString(),
-              dirName: path.basename(musicDir),
-              list: musicList,
-              index: array.length,
-            });
-          });
-      }));
+      return getMusicList(list, musicDirs);
     })
     .then(() => {
-      console.log('array', JSON.stringify(array));
-      res.json(array);
+      console.log('array', JSON.stringify(list));
+      res.json(list);
     })
     .catch(error => console.log(error));
 });
