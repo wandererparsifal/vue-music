@@ -18,6 +18,9 @@
           {{music.album}}
         </div>
       </div>
+      <div class="icon-wrapper" @click="remove(index, $event)">
+        <img class="icon-remove" src="../assets/icon_remove.svg"/>
+      </div>
     </div>
   </div>
 </template>
@@ -38,6 +41,10 @@
       rowClicked(musicData, index) {
         this.highlightRow = index;
         EventBus.$emit('EVENT_MUSIC_PLAY', musicData, index);
+      },
+      remove(index, event) {
+        console.log('remove', index);
+        event.stopPropagation();
       },
     },
     created() {
@@ -89,6 +96,20 @@
     display: flex;
     margin-left: 5vw;
     width: 20vw;
+  }
+
+  .icon-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 10vw;
+    height: 6vh;
+    width: 6vh;
+  }
+
+  .icon-remove {
+    height: 3vh;
+    width: 3vh;
   }
 
   .music-text {
