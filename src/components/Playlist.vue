@@ -2,7 +2,7 @@
   <div class="list-wrapper">
     <div class="list-item" v-for="(music, index) in data" :key="data.id"
          :style="{backgroundColor: highlightRow === index ? '#7be6ff' : (index % 2 === 0 ? '#e0ffff' : '#FFFDFD')}"
-         @click="rowClicked(music, index)">
+         @click="rowClicked(music, index)" @mouseover="rowMouseOver(index)" @mouseout="rowMouseOut(index)">
       <div class="title-wrapper">
         <div class="music-text">
           {{music.title}}
@@ -18,7 +18,7 @@
           {{music.album}}
         </div>
       </div>
-      <div class="icon-wrapper" @click="remove(index, $event)">
+      <div class="icon-wrapper" @click="remove(index, $event)" :style="{opacity: hoveredRow === index ? 1 : 0.1}">
         <img class="icon-remove" src="../assets/icon_remove.svg"/>
       </div>
     </div>
@@ -35,6 +35,7 @@
         data: [],
         musicIds: [],
         highlightRow: -1,
+        hoveredRow: -1,
       };
     },
     methods: {
@@ -45,6 +46,14 @@
       remove(index, event) {
         console.log('remove', index);
         event.stopPropagation();
+      },
+      rowMouseOver(index) {
+        this.hoveredRow = index;
+      },
+      rowMouseOut(index) {
+        if (this.hoveredRow === index) {
+          this.hoveredRow = -1;
+        }
       },
     },
     created() {
