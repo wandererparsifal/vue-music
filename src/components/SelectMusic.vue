@@ -35,23 +35,6 @@
       return {
         activeName: '0',
         allMusic: [],
-        columns: [
-          {
-            title: 'Title',
-            key: 'title',
-            align: 'left',
-          },
-          {
-            title: 'Artist',
-            key: 'artist',
-            align: 'left',
-          },
-          {
-            title: 'Album',
-            key: 'album',
-            align: 'left',
-          },
-        ],
       };
     },
     created() {
