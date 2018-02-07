@@ -1,7 +1,7 @@
 <template>
   <div class="list-wrapper">
     <div class="list-item" v-for="(music, index) in playList" :key="playList.id"
-         :style="{backgroundColor: highlightRow === index ? '#7be6ff' : (index % 2 === 0 ? '#e0ffff' : '#cdfdfc')}"
+         :style="{backgroundColor: highlightRow === index ? '#7be6ff' : (hoveredRow === index ? '#bdf9ff' : (index % 2 === 0 ? '#e0ffff' : '#cdfdfc'))}"
          @click="rowClicked(music, index)" @mouseover="rowMouseOver(index)" @mouseout="rowMouseOut(index)">
       <div class="title-wrapper">
         <div class="music-text">
