@@ -1,6 +1,6 @@
 <template>
   <div class="list-wrapper">
-    <div class="list-item" v-for="(music, index) in data" :key="data.id"
+    <div class="list-item" v-for="(music, index) in playList" :key="playList.id"
          :style="{backgroundColor: highlightRow === index ? '#7be6ff' : (index % 2 === 0 ? '#e0ffff' : '#FFFDFD')}"
          @click="rowClicked(music, index)" @mouseover="rowMouseOver(index)" @mouseout="rowMouseOut(index)">
       <div class="title-wrapper">
@@ -32,7 +32,7 @@
     name: 'Playlist',
     data() {
       return {
-        data: [],
+        playList: [],
         musicIds: [],
         highlightRow: -1,
         hoveredRow: -1,
@@ -60,7 +60,7 @@
       EventBus.$on('EVENT_MUSIC_ADDED', (musicData) => {
         if (!this.musicIds.includes(musicData.id)) {
           this.musicIds.push(musicData.id);
-          this.data.push(musicData);
+          this.playList.push(musicData);
         }
       });
       EventBus.$on('EVENT_HIGHLIGHT_ROW', (index) => {
