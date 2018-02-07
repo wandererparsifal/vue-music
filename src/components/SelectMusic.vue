@@ -1,10 +1,26 @@
 <template>
   <i-collapse class="collapse" v-model="activeName" @on-change="changed">
-    <i-panel :name="item.name" v-for="item in items" :key="item.id">
+    <i-panel :name="item.name" v-for="item in allMusic" :key="item.id">
       {{item.dirName}}
-      <p slot="content">
-        <i-table class="table" stripe :columns="columns" :data="item.list" @on-row-click="rowClicked"/>
-      </p>
+      <div slot="content" class="list-item" v-for="(music, index) in item.list" :key="item.list.id"
+           :style="{backgroundColor: index % 2 === 0 ? '#e0ffff' : '#cdfdfc'}"
+           @click="rowClicked(music)">
+        <div class="title-wrapper">
+          <div class="music-text">
+            {{music.title}}
+          </div>
+        </div>
+        <div class="artist-wrapper">
+          <div class="music-text">
+            {{music.artist}}
+          </div>
+        </div>
+        <div class="album-wrapper">
+          <div class="music-text">
+            {{music.album}}
+          </div>
+        </div>
+      </div>
     </i-panel>
   </i-collapse>
 </template>
@@ -18,7 +34,7 @@
     data() {
       return {
         activeName: '0',
-        items: [],
+        allMusic: [],
         columns: [
           {
             title: 'Title',
@@ -43,7 +59,7 @@
         .then((response) => {
           const data = response.data;
           if (data instanceof Array) {
-            this.items = response.data;
+            this.allMusic = response.data;
             this.$nextTick(() => {
               this.activeName = '1';
             });
