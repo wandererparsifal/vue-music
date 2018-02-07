@@ -1,7 +1,7 @@
 <template>
   <div class="list-wrapper">
     <div class="list-item" v-for="(music, index) in playList" :key="playList.id"
-         :style="{backgroundColor: highlightRow === index ? '#7be6ff' : (index % 2 === 0 ? '#e0ffff' : '#FFFDFD')}"
+         :style="{backgroundColor: highlightRow === index ? '#7be6ff' : (index % 2 === 0 ? '#e0ffff' : '#cdfdfc')}"
          @click="rowClicked(music, index)" @mouseover="rowMouseOver(index)" @mouseout="rowMouseOut(index)">
       <div class="title-wrapper">
         <div class="music-text">
@@ -80,7 +80,7 @@
     overflow-y: auto;
     max-height: 79vh;
     height: 79vh;
-    background-color: #F8F8FF;
+    background-color: #fff;
   }
 
   .list-item {
