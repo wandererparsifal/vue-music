@@ -44,8 +44,10 @@
         EventBus.$emit('EVENT_MUSIC_PLAY', musicData, index);
       },
       remove(index, event) {
-        console.log('remove', index);
         event.stopPropagation();
+        this.musicIds.splice(index, 1);
+        this.playList.splice(index, 1);
+        EventBus.$emit('EVENT_MUSIC_REMOVE', index);
       },
       rowMouseOver(index) {
         this.hoveredRow = index;

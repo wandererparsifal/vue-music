@@ -249,6 +249,10 @@
           playList.push(musicData);
         }
       });
+      EventBus.$on('EVENT_MUSIC_REMOVE', (index) => {
+        musicIds.splice(index, 1);
+        playList.splice(index, 1);
+      });
     },
     mounted() {
       audio = this.$refs.audio;
