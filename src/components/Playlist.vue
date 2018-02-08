@@ -45,8 +45,6 @@
       },
       remove(index, event) {
         event.stopPropagation();
-        this.musicIds.splice(index, 1);
-        this.playList.splice(index, 1);
         EventBus.$emit('EVENT_MUSIC_REMOVE', index);
       },
       rowMouseOver(index) {
@@ -64,6 +62,10 @@
           this.musicIds.push(musicData.id);
           this.playList.push(musicData);
         }
+      });
+      EventBus.$on('EVENT_MUSIC_REMOVE', (index) => {
+        this.musicIds.splice(index, 1);
+        this.playList.splice(index, 1);
       });
       EventBus.$on('EVENT_HIGHLIGHT_ROW', (index) => {
         console.log('highlightRow', this.highlightRow);
