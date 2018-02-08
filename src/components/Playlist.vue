@@ -1,6 +1,6 @@
 <template>
   <div class="list-wrapper">
-    <div class="list-item" v-for="(music, index) in playList" :key="playList.id"
+    <div class="list-item" v-for="(music, index) in list" :key="list.id"
          :style="{backgroundColor: highlightRow === index ? '#7be6ff' : (hoveredRow === index ? '#bdf9ff' : (index % 2 === 0 ? '#e0ffff' : '#cdfdfc'))}"
          @click="rowClicked(music, index)" @mouseover="rowMouseOver(index)" @mouseout="rowMouseOut(index)">
       <div class="title-wrapper">
@@ -27,13 +27,13 @@
 
 <script>
   import EventBus from '../eventBus';
+  import playlist from '../playlist';
 
   export default {
     name: 'Playlist',
     data() {
       return {
-        playList: [],
-        musicIds: [],
+        list: playlist.list,
         highlightRow: -1,
         hoveredRow: -1,
       };
@@ -58,14 +58,10 @@
     },
     created() {
       EventBus.$on('EVENT_MUSIC_ADDED', (musicData) => {
-        if (!this.musicIds.includes(musicData.id)) {
-          this.musicIds.push(musicData.id);
-          this.playList.push(musicData);
-        }
+        playlist.add(musicData);
       });
       EventBus.$on('EVENT_MUSIC_REMOVE', (index) => {
-        this.musicIds.splice(index, 1);
-        this.playList.splice(index, 1);
+        playlist.remove(index);
       });
       EventBus.$on('EVENT_HIGHLIGHT_ROW', (index) => {
         console.log('highlightRow', this.highlightRow);

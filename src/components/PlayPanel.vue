@@ -34,6 +34,7 @@
   import svgLoop from '@/assets/icon_loop.svg';
   import svgOne from '@/assets/icon_one.svg';
   import EventBus from '../eventBus';
+  import playlist from '../playlist';
 
   let isPlaying = false;
 
@@ -46,10 +47,6 @@
   let mode = 'LOOP';
 
   let indexCurrent = 0;
-
-  const musicIds = [];
-
-  const playList = [];
 
   let shuffleList = [];
 
@@ -87,21 +84,21 @@
   function getNext(mode) {
     if (mode === 'LOOP') {
       indexCurrent += 1;
-      if (indexCurrent === playList.length) {
+      if (indexCurrent === playlist.list.length) {
         indexCurrent = 0;
       }
       EventBus.$emit('EVENT_HIGHLIGHT_ROW', indexCurrent);
-      return playList[indexCurrent];
+      return playlist.list[indexCurrent];
     } else if (mode === 'ONE') {
-      return playList[indexCurrent];
+      return playlist.list[indexCurrent];
     } else if (mode === 'SHUFFLE') {
       if (shuffleList.length === 0) {
-        shuffleList = shuffleList.concat(playList);
+        shuffleList = shuffleList.concat(playlist.list);
       }
       const randomIndex = parseInt(shuffleList.length * Math.random(), 10);
       let item;
-      for (let i = 0; i < playList.length; i += 1) {
-        item = playList[i];
+      for (let i = 0; i < playlist.list.length; i += 1) {
+        item = playlist.list[i];
         if (item.id === shuffleList[randomIndex].id) {
           indexCurrent = i;
           break;
@@ -111,7 +108,7 @@
       console.log('shuffleList.length', shuffleList.length);
       console.log('indexCurrent', indexCurrent);
       EventBus.$emit('EVENT_HIGHLIGHT_ROW', indexCurrent);
-      return playList[indexCurrent];
+      return playlist.list[indexCurrent];
     }
     return null;
   }
@@ -120,20 +117,20 @@
     if (mode === 'LOOP') {
       indexCurrent -= 1;
       if (indexCurrent === -1) {
-        indexCurrent = playList.length - 1;
+        indexCurrent = playlist.list.length - 1;
       }
       EventBus.$emit('EVENT_HIGHLIGHT_ROW', indexCurrent);
-      return playList[indexCurrent];
+      return playlist.list[indexCurrent];
     } else if (mode === 'ONE') {
-      return playList[indexCurrent];
+      return playlist.list[indexCurrent];
     } else if (mode === 'SHUFFLE') {
       if (shuffleList.length === 0) {
-        shuffleList = shuffleList.concat(playList);
+        shuffleList = shuffleList.concat(playlist.list);
       }
       const randomIndex = parseInt(shuffleList.length * Math.random(), 10);
       let item;
-      for (let i = 0; i < playList.length; i += 1) {
-        item = playList[i];
+      for (let i = 0; i < playlist.list.length; i += 1) {
+        item = playlist.list[i];
         if (item.id === shuffleList[randomIndex].id) {
           indexCurrent = i;
           break;
@@ -143,7 +140,7 @@
       console.log('shuffleList.length', shuffleList.length);
       console.log('indexCurrent', indexCurrent);
       EventBus.$emit('EVENT_HIGHLIGHT_ROW', indexCurrent);
-      return playList[indexCurrent];
+      return playlist.list[indexCurrent];
     }
     return null;
   }
@@ -196,7 +193,7 @@
         }
       },
       playNext() {
-        if (playList.length !== 0) {
+        if (playlist.list.length !== 0) {
           audio.fastSeek(0);
           const musicData = getNext(mode);
           this.audioPath = `music/path?path=${musicData.path}`;
@@ -206,7 +203,7 @@
         }
       },
       playPrev() {
-        if (playList.length !== 0) {
+        if (playlist.list.length !== 0) {
           audio.fastSeek(0);
           const musicData = getPrev(mode);
           this.audioPath = `music/path?path=${musicData.path}`;
@@ -244,14 +241,10 @@
         });
       });
       EventBus.$on('EVENT_MUSIC_ADDED', (musicData) => {
-        if (!musicIds.includes(musicData.id)) {
-          musicIds.push(musicData.id);
-          playList.push(musicData);
-        }
+        playlist.add(musicData);
       });
       EventBus.$on('EVENT_MUSIC_REMOVE', (index) => {
-        musicIds.splice(index, 1);
-        playList.splice(index, 1);
+        playlist.remove(index);
       });
     },
     mounted() {
