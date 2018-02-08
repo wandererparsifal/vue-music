@@ -3,7 +3,7 @@
     <i-panel :name="item.name" v-for="(item, albumIndex) in allMusic" :key="item.id">
       {{item.dirName}}
       <div slot="content" class="list-item" v-for="(music, musicIndex) in item.list" :key="item.list.id"
-           :style="{backgroundColor: ((hoveredAlbum === albumIndex) && (hoveredMusic === musicIndex)) ? '#bdf9ff' : (musicIndex % 2 === 0 ? '#e0ffff' : '#cdfdfc')}"
+           :style="{backgroundColor: (playlistRef.includes(music) ? '#bbccff' : (((hoveredAlbum === albumIndex) && (hoveredMusic === musicIndex)) ? '#bdf9ff' : (musicIndex % 2 === 0 ? '#e0ffff' : '#cdfdfc')))}"
            @click="rowClicked(music)" @mouseover="rowMouseOver(albumIndex, musicIndex)"
            @mouseout="rowMouseOut(albumIndex, musicIndex)">
         <div class="title-wrapper">
@@ -38,6 +38,7 @@
         allMusic: [],
         hoveredAlbum: -1,
         hoveredMusic: -1,
+        playlistRef: playlist,
       };
     },
     created() {
@@ -60,7 +61,11 @@
         console.log(names);
       },
       rowClicked(musicData) {
-        playlist.add(musicData);
+        if (playlist.includes(musicData)) {
+          playlist.remove(musicData);
+        } else {
+          playlist.add(musicData);
+        }
       },
       rowMouseOver(albumIndex, musicIndex) {
         this.hoveredAlbum = albumIndex;

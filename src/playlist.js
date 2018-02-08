@@ -14,4 +14,7 @@ export default {
       this.list.splice(index, 1);
     }
   },
+  includes(musicData) {
+    return this.musicIds.includes(musicData.id);
+  },
 };
