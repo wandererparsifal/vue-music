@@ -45,7 +45,7 @@
       },
       remove(index, event) {
         event.stopPropagation();
-        EventBus.$emit('EVENT_MUSIC_REMOVE', index);
+        playlist.remove(index);
       },
       rowMouseOver(index) {
         this.hoveredRow = index;
@@ -57,12 +57,6 @@
       },
     },
     created() {
-      EventBus.$on('EVENT_MUSIC_ADDED', (musicData) => {
-        playlist.add(musicData);
-      });
-      EventBus.$on('EVENT_MUSIC_REMOVE', (index) => {
-        playlist.remove(index);
-      });
       EventBus.$on('EVENT_HIGHLIGHT_ROW', (index) => {
         console.log('highlightRow', this.highlightRow);
         this.highlightRow = index;

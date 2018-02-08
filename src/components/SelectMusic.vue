@@ -28,7 +28,7 @@
 
 <script>
   import axios from 'axios';
-  import EventBus from '../eventBus';
+  import playlist from '../playlist';
 
   export default {
     name: 'select-music',
@@ -60,7 +60,7 @@
         console.log(names);
       },
       rowClicked(musicData) {
-        EventBus.$emit('EVENT_MUSIC_ADDED', musicData);
+        playlist.add(musicData);
       },
       rowMouseOver(albumIndex, musicIndex) {
         this.hoveredAlbum = albumIndex;

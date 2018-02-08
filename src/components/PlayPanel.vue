@@ -240,12 +240,6 @@
           audio.play();
         });
       });
-      EventBus.$on('EVENT_MUSIC_ADDED', (musicData) => {
-        playlist.add(musicData);
-      });
-      EventBus.$on('EVENT_MUSIC_REMOVE', (index) => {
-        playlist.remove(index);
-      });
     },
     mounted() {
       audio = this.$refs.audio;
