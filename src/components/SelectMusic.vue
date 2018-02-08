@@ -1,10 +1,11 @@
 <template>
   <i-collapse class="collapse" v-model="activeName" @on-change="changed">
-    <i-panel :name="item.name" v-for="item in allMusic" :key="item.id">
+    <i-panel :name="item.name" v-for="(item, albumIndex) in allMusic" :key="item.id">
       {{item.dirName}}
-      <div slot="content" class="list-item" v-for="(music, index) in item.list" :key="item.list.id"
-           :style="{backgroundColor: index % 2 === 0 ? '#e0ffff' : '#cdfdfc'}"
-           @click="rowClicked(music)">
+      <div slot="content" class="list-item" v-for="(music, musicIndex) in item.list" :key="item.list.id"
+           :style="{backgroundColor: ((hoveredAlbum === albumIndex) && (hoveredMusic === musicIndex)) ? '#bdf9ff' : (musicIndex % 2 === 0 ? '#e0ffff' : '#cdfdfc')}"
+           @click="rowClicked(music)" @mouseover="rowMouseOver(albumIndex, musicIndex)"
+           @mouseout="rowMouseOut(albumIndex, musicIndex)">
         <div class="title-wrapper">
           <div class="music-text">
             {{music.title}}
@@ -35,6 +36,8 @@
       return {
         activeName: '0',
         allMusic: [],
+        hoveredAlbum: -1,
+        hoveredMusic: -1,
       };
     },
     created() {
@@ -58,6 +61,16 @@
       },
       rowClicked(musicData) {
         EventBus.$emit('EVENT_MUSIC_ADDED', musicData);
+      },
+      rowMouseOver(albumIndex, musicIndex) {
+        this.hoveredAlbum = albumIndex;
+        this.hoveredMusic = musicIndex;
+      },
+      rowMouseOut(albumIndex, musicIndex) {
+        if (this.hoveredMusic === musicIndex) {
+          this.hoveredAlbum = -1;
+          this.hoveredMusic = -1;
+        }
       },
     },
   };
