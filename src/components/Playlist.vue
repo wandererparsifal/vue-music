@@ -2,7 +2,7 @@
   <div class="list-wrapper">
     <div class="list-item" v-for="(music, index) in list" :key="list.id"
          :style="{backgroundColor: highlightRow === index ? '#7be6ff' : (hoveredRow === index ? '#bdf9ff' : (index % 2 === 0 ? '#e0ffff' : '#cdfdfc'))}"
-         @click="rowClicked(music, index)" @mouseover="rowMouseOver(index)" @mouseout="rowMouseOut(index)">
+         @click="rowClicked(index)" @mouseover="rowMouseOver(index)" @mouseout="rowMouseOut(index)">
       <div class="title-wrapper">
         <div class="music-text">
           {{music.title}}
@@ -39,9 +39,9 @@
       };
     },
     methods: {
-      rowClicked(musicData, index) {
+      rowClicked(index) {
         this.highlightRow = index;
-        EventBus.$emit('EVENT_MUSIC_PLAY', musicData, index);
+        EventBus.$emit('EVENT_MUSIC_PLAY', index);
       },
       remove(index, event) {
         event.stopPropagation();

@@ -46,7 +46,7 @@
 
   let mode = 'LOOP';
 
-  let indexCurrent = 0;
+  let indexCurrent = 0; // todo 列表删除当前播放项时，循环播放下一曲有问题
 
   let shuffleList = [];
 
@@ -232,7 +232,8 @@
       },
     },
     created() {
-      EventBus.$on('EVENT_MUSIC_PLAY', (musicData, index) => {
+      EventBus.$on('EVENT_MUSIC_PLAY', (index) => {
+        const musicData = playlist.list[index];
         console.log('musicData', musicData, index);
         indexCurrent = index;
         this.audioPath = `music/path?path=${musicData.path}`;
