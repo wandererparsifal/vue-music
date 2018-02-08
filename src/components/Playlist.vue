@@ -18,7 +18,7 @@
           {{music.album}}
         </div>
       </div>
-      <div class="icon-wrapper" @click="remove(index, $event)" :style="{opacity: hoveredRow === index ? 1 : 0.1}">
+      <div class="icon-wrapper" @click="remove(music, $event)" :style="{opacity: hoveredRow === index ? 1 : 0.1}">
         <img class="icon-remove" src="../assets/icon_remove.svg"/>
       </div>
     </div>
@@ -43,9 +43,9 @@
         this.highlightRow = index;
         EventBus.$emit('EVENT_MUSIC_PLAY', index);
       },
-      remove(index, event) {
+      remove(music, event) {
         event.stopPropagation();
-        playlist.remove(index);
+        playlist.remove(music);
       },
       rowMouseOver(index) {
         this.hoveredRow = index;

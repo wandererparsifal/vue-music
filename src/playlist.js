@@ -7,8 +7,11 @@ export default {
       this.list.push(musicData);
     }
   },
-  remove(index) {
-    this.musicIds.splice(index, 1);
-    this.list.splice(index, 1);
+  remove(musicData) {
+    const index = this.musicIds.indexOf(musicData.id);
+    if (index >= 0) {
+      this.musicIds.splice(index, 1);
+      this.list.splice(index, 1);
+    }
   },
 };
