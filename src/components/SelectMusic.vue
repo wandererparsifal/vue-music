@@ -21,6 +21,9 @@
             {{music.album}}
           </div>
         </div>
+        <div class="icon-wrapper" v-show="playlistRef.includes(music)">
+          <img class="icon" src="../assets/icon_added.svg"/>
+        </div>
       </div>
     </i-panel>
   </i-collapse>

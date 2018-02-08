@@ -19,7 +19,7 @@
         </div>
       </div>
       <div class="icon-wrapper" @click="remove(music, $event)" :style="{opacity: hoveredRow === index ? 1 : 0.1}">
-        <img class="icon-remove" src="../assets/icon_remove.svg"/>
+        <img class="icon" src="../assets/icon_remove.svg"/>
       </div>
     </div>
   </div>
@@ -110,7 +110,7 @@
     width: 6vh;
   }
 
-  .icon-remove {
+  .icon {
     height: 3vh;
     width: 3vh;
   }
