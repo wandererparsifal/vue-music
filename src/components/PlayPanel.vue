@@ -244,7 +244,7 @@
     },
     mounted() {
       audio = this.$refs.audio;
-      audio.addEventListener('canplay', () => {
+      audio.addEventListener('durationchange', () => {
         this.totalTime = Math.round(audio.duration);
         this.textTotalTime = formatTime(this.totalTime);
       });
