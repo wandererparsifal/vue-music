@@ -7,7 +7,7 @@
       <collapse-transition>
         <div v-show="activeArray.includes(albumIndex)">
           <div slot="content" class="list-item" v-for="(music, musicIndex) in item.list" :key="item.list.id"
-               :style="{backgroundColor: (playlistRef.includes(music) ? '#bbccff' : (((hoveredAlbum === albumIndex) && (hoveredMusic === musicIndex)) ? '#bdf9ff' : (musicIndex % 2 === 0 ? '#e0ffff' : '#cdfdfc')))}"
+               :style="{backgroundColor: (playlistRef.includes(music) ? 'rgba(0, 255, 255, 0.9)' : (((hoveredAlbum === albumIndex) && (hoveredMusic === musicIndex)) ? 'rgba(189, 249, 255, 0.9)' : (musicIndex % 2 === 0 ? 'rgba(224, 255, 255, 0.9)' : 'rgba(205, 253, 252, 0.9)')))}"
                @click="rowClicked(music)" @mouseover="rowMouseOver(albumIndex, musicIndex)"
                @mouseout="rowMouseOut(albumIndex, musicIndex)">
             <div class="title-wrapper">
@@ -104,6 +104,7 @@
   .collapse {
     overflow-y: auto;
     max-height: 90vh;
+    background-color: rgba(0, 0, 0, 0.2);
   }
 
   .collapse-handle {
@@ -113,8 +114,8 @@
     cursor: pointer;
     font-size: 1rem;
     color: #00477D;
-    background-color: rgba(255, 255, 255, 0.5);
     height: 6vh;
+    background: linear-gradient(to bottom right, rgba(204, 204, 255, 0.8), rgba(0, 191, 255, 0.8));
   }
 
   .hr {

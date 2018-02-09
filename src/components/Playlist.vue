@@ -1,7 +1,7 @@
 <template>
   <div class="list-wrapper">
     <div class="list-item" v-for="(music, index) in list" :key="list.id"
-         :style="{backgroundColor: highlightRow === index ? 'rgba(28, 205, 221, 0.9)' : (hoveredRow === index ? 'rgba(189, 249, 255, 0.9)' : (index % 2 === 0 ? 'rgba(224, 255, 255, 0.9)' : 'rgba(205, 253, 252, 0.9)'))}"
+         :style="{backgroundColor: highlightRow === index ? 'rgba(0, 255, 255, 0.9)' : (hoveredRow === index ? 'rgba(189, 249, 255, 0.9)' : (index % 2 === 0 ? 'rgba(224, 255, 255, 0.9)' : 'rgba(205, 253, 252, 0.9)'))}"
          @click="rowClicked(index)" @mouseover="rowMouseOver(index)" @mouseout="rowMouseOut(index)">
       <div class="title-wrapper">
         <div class="music-text">
