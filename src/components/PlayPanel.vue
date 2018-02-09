@@ -348,14 +348,14 @@
   }
 
   .text-current-time {
-    color: #483D8B;
+    color: #000080;
     margin-top: 1.4vh;
     font-size: 1rem;
     margin-left: -2vw;
   }
 
   .text-total-time {
-    color: #483D8B;
+    color: #000080;
     margin-top: 1.4vh;
     font-size: 1rem;
     margin-left: 1vw;
