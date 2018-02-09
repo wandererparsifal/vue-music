@@ -54,8 +54,8 @@
   .main-div {
     width: 100vw;
     height: 100vh;
-    /*background: linear-gradient(to bottom right, #006374 20%, #8B00FF 40%, #00BFFF 60%, #00CED1 80%);*/
-    background: linear-gradient(to bottom right, #006374, #6640FF, #00BFFF, #00CED1);
+    background-image: url("../assets/556062.jpg");
+    background-size: 100% 100%;
   }
 
   .tab {

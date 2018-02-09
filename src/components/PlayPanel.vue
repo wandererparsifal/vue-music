@@ -279,7 +279,7 @@
   .panel-controls {
     width: 100vw;
     height: 2vw;
-    background-color: rgba(255, 255, 255, 0.5);
+    background-color: rgba(205, 253, 252, 0.7);
     display: flex;
     align-items: center;
     clear: both;
@@ -288,7 +288,7 @@
   .panel-progress {
     width: 100vw;
     height: 2vw;
-    background-color: rgba(255, 255, 255, 0.5);
+    background-color: rgba(205, 253, 252, 0.7);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -298,7 +298,7 @@
   .panel-blank {
     width: 100vw;
     height: 1vh;
-    background-color: rgba(255, 255, 255, 0.5);
+    background-color: rgba(205, 253, 252, 0.7);
   }
 
   .prev {
