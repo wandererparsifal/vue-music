@@ -31,7 +31,7 @@
           </div>
         </div>
       </collapse-transition>
-      <div class="hr" v-if="albumIndex < (allMusic.length - 1)"></div>
+      <div class="hr" v-if="(albumIndex < (allMusic.length - 1)) && !activeArray.includes(albumIndex)"></div>
     </div>
   </div>
 </template>
